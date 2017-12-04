@@ -1,0 +1,45 @@
+{
+  "states": [
+    "in esse",
+    "aute sit irure quis",
+    "dolor eiusmod eu"
+  ],
+  "startState": "do cillum",
+  "tapeSymbols": [
+    "commodo",
+    -56106799,
+    "ipsum pariatur ea fugiat"
+  ],
+  "blankSymbol": "ullamco Lorem commodo",
+  "stateSymbTrans": [
+    {
+      "state": "esse sint deserunt",
+      "symbolTrans": [
+        {
+          "symbol": "dolore anim exercitation",
+          "transition": {
+            "state": "ex ut",
+            "symbol": -84875835,
+            "direction": "R"
+          }
+        },
+        {
+          "symbol": "ea",
+          "transition": {
+            "state": "commodo exercitation laborum",
+            "symbol": "labore nisi nulla aute",
+            "direction": "R"
+          }
+        },
+        {
+          "symbol": -77732033,
+          "transition": {
+            "state": "ad ex tempor in elit",
+            "symbol": "laboris officia in dolor",
+            "direction": "R"
+          }
+        }
+      ]
+    }
+  ]
+}

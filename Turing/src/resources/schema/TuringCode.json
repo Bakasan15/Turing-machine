@@ -1,0 +1,129 @@
+{
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"states": {
+			"type": "array",
+			"uniqueItems": true,
+			"items": {
+				"type": "string"
+			}
+		},
+		"startState": {
+			"type": "string"
+		},
+		"finalStates": {
+			"type": "array",
+			"uniqueItems": true,
+			"items": {
+				"type": "string"
+			}
+		},
+		"tapeSymbols": {
+			"type": "array",
+			"uniqueItems": true,
+			"items": {
+				"type": [
+					"string",
+					"integer"
+				]
+			}
+		},
+		"blankSymbol": {
+			"type": [
+				"string",
+				"integer"
+			]
+		},
+		"inputSymbols": {
+			"type": "array",
+			"uniqueItems": true,
+			"items": {
+				"type": [
+					"string",
+					"integer"
+				]
+			}
+		},
+		"input": {
+			"type": "array",
+			"items": {
+				"type": [
+					"string",
+					"integer"
+				]
+			}
+		},
+		"stateSymbTrans": {
+			"type": "array",
+			"uniqueItems": true,
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"properties": {
+					"state": {
+						"type": "string"
+					},
+					"symbolTrans": {
+						"type": "array",
+						"uniqueItems": true,
+						"items": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"symbol": {
+									"type": [
+										"string",
+										"integer"
+									]
+								},
+								"transition": {
+									"type": "object",
+									"properties": {
+										"state": {
+											"type": "string"
+										},
+										"symbol": {
+											"type": [
+												"string",
+												"integer"
+											]
+										},
+										"direction": {
+											"type": "string",
+											"enum": [
+												"L",
+												"R",
+												"S"
+											]
+										}
+									},
+									"required": [
+										"state",
+										"symbol",
+										"direction"
+									]
+								}
+							},
+							"required": [
+								"symbol",
+								"transition"
+							]
+						}
+					}
+				},
+				"required": [
+					"state",
+					"symbolTrans"
+				]
+			}
+		}
+	},
+	"required": [
+		"states",
+		"startState",
+		"tapeSymbols",
+		"blankSymbol",
+		"stateSymbTrans"
+	]
+}
