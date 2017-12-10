@@ -1,9 +1,19 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.List;
 import java.util.Set;
+
+import com.example.types.StateSymbTran;
+import com.example.types.SymbolTran;
+import com.example.types.TuringCode;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Map;
  
 public class UTM {
@@ -168,21 +178,34 @@ public class UTM {
         }
     }
  
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+    	
+    	ObjectMapper om = new ObjectMapper();
+		TuringCode tc = om.readValue(new File("src/resources/code/BusyBeaver.json"), TuringCode.class);
+    	
         // Simple incrementer.
-        String init = "q0";
-        String blank = "b";
+        String init = tc.getStartState();
+        String blank = tc.getBlankSymbol();
  
         Set<String> term = new HashSet<String>();
-        term.add("qf");
+        term.addAll(tc.getFinalStates());
  
         Set<Transition> trans = new HashSet<Transition>();
  
-        trans.add(new Transition(new StateTapeSymbolPair("q0", "1"), new StateTapeSymbolPair("q0", "1"), 1));
-        trans.add(new Transition(new StateTapeSymbolPair("q0", "b"), new StateTapeSymbolPair("qf", "1"), 0));
+        for (StateSymbTran stateSymbTran : tc.getStateSymbTrans()) {
+        	String state = stateSymbTran.getState();
+			for (SymbolTran symbolTran : stateSymbTran.getSymbolTrans()) {
+				String symbol = symbolTran.getSymbol();
+				List t = symbolTran.getTransition();
+				String stateT = (String) t.get(0);
+				String symbolT = t.get(1).toString();
+				int direction = "R".equals(t.get(2)) ? 1 : -1;
+				trans.add(new Transition(new StateTapeSymbolPair(state, symbol), new StateTapeSymbolPair(stateT, symbolT), direction));
+			}
+		}
  
         UTM machine = new UTM(trans, term, init, blank);
-        machine.initializeTape("111");
+        machine.initializeTape("");
         System.out.println("Output (si): " + machine.runTM() + "\n");
  
         // Busy Beaver (overwrite variables from above).
@@ -207,32 +230,32 @@ public class UTM {
         machine.initializeTape("");
         System.out.println("Output (bb): " + machine.runTM());
  
-        // Sorting test (overwrite variables from above).
-        init = "s0";
-        blank = "*";
- 
-        term = new HashSet<String>();
-        term.add("see");
- 
-        trans = new HashSet<Transition>();
- 
-        trans.add(new Transition(new StateTapeSymbolPair("s0", "a"), new StateTapeSymbolPair("s0", "a"), 1));
-        trans.add(new Transition(new StateTapeSymbolPair("s0", "b"), new StateTapeSymbolPair("s1", "B"), 1));
-        trans.add(new Transition(new StateTapeSymbolPair("s0", "*"), new StateTapeSymbolPair("se", "*"), -1));
-        trans.add(new Transition(new StateTapeSymbolPair("s1", "a"), new StateTapeSymbolPair("s1", "a"), 1));
-        trans.add(new Transition(new StateTapeSymbolPair("s1", "b"), new StateTapeSymbolPair("s1", "b"), 1));
-        trans.add(new Transition(new StateTapeSymbolPair("s1", "*"), new StateTapeSymbolPair("s2", "*"), -1));
-        trans.add(new Transition(new StateTapeSymbolPair("s2", "a"), new StateTapeSymbolPair("s3", "b"), -1));
-        trans.add(new Transition(new StateTapeSymbolPair("s2", "b"), new StateTapeSymbolPair("s2", "b"), -1));
-        trans.add(new Transition(new StateTapeSymbolPair("s2", "B"), new StateTapeSymbolPair("se", "b"), -1));
-        trans.add(new Transition(new StateTapeSymbolPair("s3", "a"), new StateTapeSymbolPair("s3", "a"), -1));
-        trans.add(new Transition(new StateTapeSymbolPair("s3", "b"), new StateTapeSymbolPair("s3", "b"), -1));
-        trans.add(new Transition(new StateTapeSymbolPair("s3", "B"), new StateTapeSymbolPair("s0", "a"), 1));
-        trans.add(new Transition(new StateTapeSymbolPair("se", "a"), new StateTapeSymbolPair("se", "a"), -1));
-        trans.add(new Transition(new StateTapeSymbolPair("se", "*"), new StateTapeSymbolPair("see", "*"), 1));
- 
-        machine = new UTM(trans, term, init, blank);
-        machine.initializeTape("babbababaa");
-        System.out.println("Output (sort): " + machine.runTM() + "\n");
+//        // Sorting test (overwrite variables from above).
+//        init = "s0";
+//        blank = "*";
+// 
+//        term = new HashSet<String>();
+//        term.add("see");
+// 
+//        trans = new HashSet<Transition>();
+// 
+//        trans.add(new Transition(new StateTapeSymbolPair("s0", "a"), new StateTapeSymbolPair("s0", "a"), 1));
+//        trans.add(new Transition(new StateTapeSymbolPair("s0", "b"), new StateTapeSymbolPair("s1", "B"), 1));
+//        trans.add(new Transition(new StateTapeSymbolPair("s0", "*"), new StateTapeSymbolPair("se", "*"), -1));
+//        trans.add(new Transition(new StateTapeSymbolPair("s1", "a"), new StateTapeSymbolPair("s1", "a"), 1));
+//        trans.add(new Transition(new StateTapeSymbolPair("s1", "b"), new StateTapeSymbolPair("s1", "b"), 1));
+//        trans.add(new Transition(new StateTapeSymbolPair("s1", "*"), new StateTapeSymbolPair("s2", "*"), -1));
+//        trans.add(new Transition(new StateTapeSymbolPair("s2", "a"), new StateTapeSymbolPair("s3", "b"), -1));
+//        trans.add(new Transition(new StateTapeSymbolPair("s2", "b"), new StateTapeSymbolPair("s2", "b"), -1));
+//        trans.add(new Transition(new StateTapeSymbolPair("s2", "B"), new StateTapeSymbolPair("se", "b"), -1));
+//        trans.add(new Transition(new StateTapeSymbolPair("s3", "a"), new StateTapeSymbolPair("s3", "a"), -1));
+//        trans.add(new Transition(new StateTapeSymbolPair("s3", "b"), new StateTapeSymbolPair("s3", "b"), -1));
+//        trans.add(new Transition(new StateTapeSymbolPair("s3", "B"), new StateTapeSymbolPair("s0", "a"), 1));
+//        trans.add(new Transition(new StateTapeSymbolPair("se", "a"), new StateTapeSymbolPair("se", "a"), -1));
+//        trans.add(new Transition(new StateTapeSymbolPair("se", "*"), new StateTapeSymbolPair("see", "*"), 1));
+// 
+//        machine = new UTM(trans, term, init, blank);
+//        machine.initializeTape("babbababaa");
+//        System.out.println("Output (sort): " + machine.runTM() + "\n");
     }
 }

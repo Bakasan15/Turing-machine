@@ -1,0 +1,35 @@
+{
+	"states": ["A", "B", "C", "HALT"],
+	"startState": "A",
+	"finalStates": ["HALT"],
+	"tapeSymbols": [0, 1],
+	"blankSymbol": 0,
+	"stateSymbTrans": [{
+		"state": "A",
+		"symbolTrans": [{
+			"symbol": 0,
+			"transition": ["B", 1, "R"]
+		},{
+			"symbol": 1,
+			"transition": ["C", 1, "L"]
+		}]
+	},{
+		"state": "B",
+		"symbolTrans": [{
+			"symbol": 0,
+			"transition": ["A", 1, "L"]
+		},{
+			"symbol": 1,
+			"transition": ["B", 1, "R"]
+		}]
+	},{
+		"state": "C",
+		"symbolTrans": [{
+			"symbol": 0,
+			"transition": ["B", 1, "L"]
+		},{
+			"symbol": 1,
+			"transition": ["HALT", 1, "R"]
+		}]
+	}]
+}

@@ -7,9 +7,9 @@ public class Parser {
 
 	public static void main(String[] args) throws Exception {
 		ObjectMapper om = new ObjectMapper();
-		TuringCode tc = om.readValue(new File("src/resources/code/test.json"), TuringCode.class);
+		TuringCode tc = om.readValue(new File("src/resources/code/BusyBeaver.json"), TuringCode.class);
 		
-		System.out.println(tc);
+		System.out.println(tc.getStartState());
 
 	}
 

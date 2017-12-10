@@ -78,30 +78,27 @@
 									]
 								},
 								"transition": {
-									"type": "object",
-									"properties": {
-										"state": {
+									"type": "array",
+									"items": [
+										{
 											"type": "string"
 										},
-										"symbol": {
+										{
 											"type": [
 												"string",
 												"integer"
 											]
 										},
-										"direction": {
+										{
 											"type": "string",
 											"enum": [
 												"L",
 												"R"
 											]
 										}
-									},
-									"required": [
-										"state",
-										"symbol",
-										"direction"
-									]
+									],
+									"additionalItems": false,
+									"minItems": 3
 								}
 							},
 							"required": [
